@@ -21,11 +21,8 @@ int today;
 User* currentUser = nullptr;
 
 /*----------------------------*/
-void addBook(Book*);
-bool removeBook(string);
-void addUser(User*);
+void insertUser(User*);
 bool removeUser(string);
-/*----------------------------*/
 void signUp();
 void signIn();
 /*----------------------------*/
@@ -36,8 +33,12 @@ void showUserBooksSorted(User);
 void searchBook();
 void userMenu();
 /*----------------------------*/
-
-
+void insertBook(Book*);
+bool removeBook(string);
+void addBook();
+void deleteBook();
+void adminMenu();
+/*----------------------------*/
 
 int main()
 {
@@ -80,44 +81,9 @@ int main()
 	return 0;
 }
 
-/*-------------------------------------------Functions---------------------------------------------*/
+/*--------------------------------------------Functions------------------------------------------------*/
 
-void addBook(Book* input)
-{
-	Node<Book>* temp = new Node<Book>;
-	temp->setValue(input);
-	temp->setNext(books);
-	books = temp;
-}
-
-bool removeBook(string t)
-{
-	if (books == nullptr)
-		return false;
-
-	Node<Book>* temp = books;
-	if (books->getValue()->getTitle() == t)
-	{
-		books = books->getNext();
-		delete temp;
-		return true;
-	}
-	Node<Book>* temp2 = nullptr;
-	while (temp->getNext() != nullptr)
-	{
-		if (temp->getNext()->getValue()->getTitle() == t)
-		{
-			temp2 = temp->getNext();
-			temp->setNext(temp->getNext()->getNext());
-			delete temp2;
-			return true;
-		}
-		temp = temp->getNext();
-	}
-	return false;
-}
-
-void addUser(User* input)
+void insertUser(User* input)
 {
 	Node<User>* temp = new Node<User>;
 	temp->setValue(input);
@@ -152,10 +118,6 @@ bool removeUser(string u)
 	return false;
 }
 
-
-/*----------------------------------------------------------------------------------------------------*/
-
-
 void signUp()
 {
 	CLEAR;
@@ -166,7 +128,7 @@ void signUp()
 	cout << endl << "USERNAME : "; cin >> username;
 	cout << endl << "PASSWORD : "; cin >> password;
 	User temp(name, lastName, nationalCode, username, password);
-	addUser(&temp);
+	insertUser(&temp);
 }
 
 void signIn()
@@ -175,6 +137,11 @@ void signIn()
 	string username, password;
 	cout << "USERNAME : "; cin >> username;
 	cout << endl << "PASSWORD : "; cin >> password;
+	if (username == "admin" && password == "1234")
+	{
+		adminMenu();
+		return;
+	}
 	AVLTree<User> userAVL(users);
 	currentUser = userAVL.search(userAVL.root,username);
 	if (currentUser == nullptr)
@@ -336,3 +303,124 @@ void userMenu()
 			break;
 	}
 }
+
+
+/*----------------------------------------------------------------------------------------------------*/
+
+
+void insertBook(Book* input)
+{
+	Node<Book>* temp = new Node<Book>;
+	temp->setValue(input);
+	temp->setNext(books);
+	books = temp;
+}
+
+bool removeBook(string t)
+{
+	if (books == nullptr)
+		return false;
+
+	Node<Book>* temp = books;
+	if (books->getValue()->getTitle() == t)
+	{
+		books = books->getNext();
+		delete temp;
+		return true;
+	}
+	Node<Book>* temp2 = nullptr;
+	while (temp->getNext() != nullptr)
+	{
+		if (temp->getNext()->getValue()->getTitle() == t)
+		{
+			temp2 = temp->getNext();
+			temp->setNext(temp->getNext()->getNext());
+			delete temp2;
+			return true;
+		}
+		temp = temp->getNext();
+	}
+	return false;
+}
+
+void addBook()
+{
+	string title, genre, author, date;
+	cout << "TITLE : "; cin >> title;
+	cout << endl << "AUTHOR : "; cin >> author;
+	cout << endl << "GENRE : "; cin >> genre;
+	cout << endl << "PUBLICATION DATE : "; cin >> date;
+	Book* temp = new Book(title, genre, date, author);
+	insertBook(temp);
+}
+
+void deleteBook()
+{
+	string title;	
+	cout << "TITLE : "; cin >> title;
+	CLEAR;
+	if (removeBook(title))
+	{
+		cout << "THE BOOK WAS SUCCESSFULLY REMOVED .";
+	}
+	else
+	{
+		cout << "NOT FOUND !";
+
+	}
+}
+
+void adminMenu()
+{
+	bool flag = false;
+	while (true)
+	{
+		CLEAR;
+		char input;
+		cout << "1. ASSIGN A BOOK" << endl
+			<< "2. GET A BOOK" << endl
+			<< "3. RESERVE A BOOK" << endl
+			<< "4. EXTEND TIME" << endl
+			<< "5. ADD A BOOK" << endl
+			<< "6. REMOVE A BOOK" << endl
+			<< "7. BACK" << endl;
+		cin >> input;
+		switch (input)
+		{
+		case '1':
+			
+			break;
+		case '2':
+			
+			break;
+		case '3':
+			
+			break;
+		case '4':
+			
+			break;
+		case '5':
+			CLEAR;
+			addBook();
+			break;
+		case '6':
+			CLEAR;
+			deleteBook();
+			WAIT;
+			break;
+		case '7':
+			flag = true;
+			break;
+		default:
+			cout << "INVALID ANSWER ! PLEASE TRY AGAIN .";
+			WAIT;
+			cin.clear();
+			cin.ignore(numeric_limits<streamsize>::max(), '\n');
+			break;
+		}
+		if (flag)
+			break;
+	}
+}
+
+/*----------------------------------------------------------------------------------------------------*/

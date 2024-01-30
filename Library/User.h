@@ -32,6 +32,6 @@ public:
 	bool operator<(const User&);
 	bool operator>=(const User&);
 	Node<Book>* getUserBooks() const;
-	void addBook(Book*);
+	void insertBook(Book*);
 	bool removeBook(string);
 };

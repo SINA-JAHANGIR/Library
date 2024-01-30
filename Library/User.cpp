@@ -94,7 +94,7 @@ Node<Book>* User::getUserBooks() const
 	return userBooks;
 }
 
-void User::addBook(Book* input)
+void User::insertBook(Book* input)
 {
 	Node<Book>* temp = new Node<Book>;
 	temp->setValue(input);
