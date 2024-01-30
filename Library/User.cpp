@@ -69,6 +69,7 @@ User& User::operator=(const User& other)
 	this->nationalCode = other.getNationalCode();
 	this->username = other.getUsername();
 	this->password = other.getPassword();
+	this->userBooks = other.getUserBooks();
 	return *this;
 }
 
@@ -88,12 +89,12 @@ bool User::operator>=(const User& other)
 		return true;
 }
 
-Node<Book>* User::getUserBooks()
+Node<Book>* User::getUserBooks() const
 {
 	return userBooks;
 }
 
-void User::addBook(Book input)
+void User::addBook(Book* input)
 {
 	Node<Book>* temp = new Node<Book>;
 	temp->setValue(input);
@@ -107,7 +108,7 @@ bool User::removeBook(string t)
 		return false;
 
 	Node<Book>* temp = userBooks;
-	if (userBooks->getValue().getTitle() == t)
+	if (userBooks->getValue()->getTitle() == t)
 	{
 		userBooks = userBooks->getNext();
 		delete temp;
@@ -116,7 +117,7 @@ bool User::removeBook(string t)
 	Node<Book>* temp2 = nullptr;
 	while (temp->getNext() != nullptr)
 	{
-		if (temp->getNext()->getValue().getTitle() == t)
+		if (temp->getNext()->getValue()->getTitle() == t)
 		{
 			temp2 = temp->getNext();
 			temp->setNext(temp->getNext()->getNext());

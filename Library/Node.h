@@ -4,17 +4,17 @@ template <typename T>
 class Node
 {
 private:
-	T value;
+	T* value;
 	Node* next;
 public:
-	void setValue(T);
+	void setValue(T*);
 	void setNext(Node*);
-	T getValue();
+	T* getValue();
 	Node* getNext();
 };
 
 template <typename T>
-void Node<T>::setValue(T v)
+void Node<T>::setValue(T* v)
 {
 	value = v;
 }
@@ -26,7 +26,7 @@ void Node<T>::setNext(Node* n)
 }
 
 template <typename T>
-T Node<T>::getValue()
+T* Node<T>::getValue()
 {
 	return value;
 }

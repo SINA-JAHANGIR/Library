@@ -18,22 +18,22 @@ Node<Book>* books;
 Node<User>* users;
 
 int today;
+User* currentUser = nullptr;
 
 /*----------------------------*/
-void addBook(Book);
+void addBook(Book*);
 bool removeBook(string);
-void addUser(User);
+void addUser(User*);
 bool removeUser(string);
 /*----------------------------*/
 void signUp();
 void signIn();
 /*----------------------------*/
 void showAllBooks();
-void showAllbooksSorted();
+void showAllBooksSorted();
 void showUserBooks(User);
 void showUserBooksSorted(User);
-Book* searchBook(string);
-/*----------------------------*/
+void searchBook();
 void userMenu();
 /*----------------------------*/
 
@@ -53,12 +53,12 @@ int main()
 	while (true)
 	{
 		CLEAR;
-		char input1;
+		char input;
 		cout << "1. SIGN UP" << endl
 			<< "2. SIGN IN" << endl
 			<< "3. Exit" << endl;
-		cin >> input1;
-		switch (input1)
+		cin >> input;
+		switch (input)
 		{
 		case '1':
 			signUp();
@@ -71,10 +71,10 @@ int main()
 		default:
 			cout << "INVALID ANSWER ! PLEASE TRY AGAIN .";
 			WAIT;
+			cin.clear();
+			cin.ignore(numeric_limits<streamsize>::max(), '\n');
 			break;
 		}
-		cin.clear();
-		cin.ignore(numeric_limits<streamsize>::max(), '\n');
 	}
 
 	return 0;
@@ -82,7 +82,7 @@ int main()
 
 /*-------------------------------------------Functions---------------------------------------------*/
 
-void addBook(Book input)
+void addBook(Book* input)
 {
 	Node<Book>* temp = new Node<Book>;
 	temp->setValue(input);
@@ -96,7 +96,7 @@ bool removeBook(string t)
 		return false;
 
 	Node<Book>* temp = books;
-	if (books->getValue().getTitle() == t)
+	if (books->getValue()->getTitle() == t)
 	{
 		books = books->getNext();
 		delete temp;
@@ -105,7 +105,7 @@ bool removeBook(string t)
 	Node<Book>* temp2 = nullptr;
 	while (temp->getNext() != nullptr)
 	{
-		if (temp->getNext()->getValue().getTitle() == t)
+		if (temp->getNext()->getValue()->getTitle() == t)
 		{
 			temp2 = temp->getNext();
 			temp->setNext(temp->getNext()->getNext());
@@ -117,7 +117,7 @@ bool removeBook(string t)
 	return false;
 }
 
-void addUser(User input)
+void addUser(User* input)
 {
 	Node<User>* temp = new Node<User>;
 	temp->setValue(input);
@@ -131,7 +131,7 @@ bool removeUser(string u)
 		return false;
 
 	Node<User>* temp = users;
-	if (users->getValue().getUsername() == u)
+	if (users->getValue()->getUsername() == u)
 	{
 		users = users->getNext();
 		delete temp;
@@ -140,7 +140,7 @@ bool removeUser(string u)
 	Node<User>* temp2 = nullptr;
 	while (temp->getNext() != nullptr)
 	{
-		if (temp->getNext()->getValue().getUsername() == u)
+		if (temp->getNext()->getValue()->getUsername() == u)
 		{
 			temp2 = temp->getNext();
 			temp->setNext(temp->getNext()->getNext());
@@ -166,7 +166,7 @@ void signUp()
 	cout << endl << "USERNAME : "; cin >> username;
 	cout << endl << "PASSWORD : "; cin >> password;
 	User temp(name, lastName, nationalCode, username, password);
-	addUser(temp);
+	addUser(&temp);
 }
 
 void signIn()
@@ -176,7 +176,6 @@ void signIn()
 	cout << "USERNAME : "; cin >> username;
 	cout << endl << "PASSWORD : "; cin >> password;
 	AVLTree<User> userAVL(users);
-	User* currentUser = new User();
 	currentUser = userAVL.search(userAVL.root,username);
 	if (currentUser == nullptr)
 	{
@@ -203,57 +202,137 @@ void signIn()
 
 void showAllBooks()
 {
-	Node<Book>* temp = books;
-	if (temp == nullptr)
+	if (books == nullptr)
 	{
 		cout << "THERE ARE NO BOOKS !" << endl;
+		return;
 	}
+	Node<Book>* temp = books;
 	while (temp != nullptr)
 	{
-		temp->getValue().print();
+		temp->getValue()->print();
 		temp = temp->getNext();
 	}
 }
 
-void showAllbooksSorted()
+void showAllBooksSorted()
 {
+	if (books == nullptr)
+	{
+		cout << "THERE ARE NO BOOKS !" << endl;
+		return;
+	}
 	AVLTree<Book> bookAVL(books);
 	bookAVL.inorder(bookAVL.get_root());
 }
 
 void showUserBooks(User user)
 {
-	Node<Book>* temp = user.getUserBooks();
-	if (temp == nullptr)
+	if (user.getUserBooks() == nullptr)
 	{
 		cout << "THERE ARE NO BOOKS !" << endl;
+		return;
 	}
+	Node<Book>* temp = user.getUserBooks();
 	while (temp != nullptr)
 	{
-		temp->getValue().print();
+		temp->getValue()->print();
 		temp = temp->getNext();
 	}
 }
 
 void showUserBooksSorted(User user)
 {
+	if (user.getUserBooks() == nullptr)
+	{
+		cout << "THERE ARE NO BOOKS !" << endl;
+		return;
+	}
 	Node<Book>* temp = user.getUserBooks();
 	AVLTree<Book> userBooksAVL(temp);
 	userBooksAVL.inorder(userBooksAVL.get_root());
 }
 
-Book* searchBook(string title)
+void searchBook()
 {
+	cout << "ENTER YOUR BOOK TITLE : ";
+	string title;
+	cin >> title;
 	AVLTree<Book> bookAVL(books);
-	return bookAVL.search(bookAVL.get_root(), title);
+	Book* temp = bookAVL.search(bookAVL.get_root(), title);
+	CLEAR;
+	if (temp == nullptr)
+	{
+		cout << "NOT FOUND !";
+	}
+	else
+	{
+		temp->print();
+	}
 }
-
-
-
-/*----------------------------------------------------------------------------------------------------*/
-
 
 void userMenu()
 {
-	// USER MENU :
+	bool flag = false;
+	while (true)
+	{
+		CLEAR;
+		char input;
+		cout << "1. ALL BOOKS" << endl
+			<< "2. ALL BOOKS (SORTED)" << endl
+			<< "3. MY BOOKS" << endl
+			<< "4. MY BOOKS (SORTED)" << endl
+			<< "5. SEARCH" << endl
+			<< "6. BACK" << endl;
+		cin >> input;
+		switch (input)
+		{
+		case '1':
+			CLEAR;
+			showAllBooks();
+			WAIT;
+			WAIT;
+			WAIT;
+			break;
+		case '2':
+			CLEAR;
+			showAllBooksSorted();
+			WAIT;
+			WAIT;
+			WAIT;
+			break;
+		case '3':
+			CLEAR;
+			showUserBooks(*currentUser);
+			WAIT;
+			WAIT;
+			WAIT;
+			break;
+		case '4':
+			CLEAR;
+			showUserBooksSorted(*currentUser);
+			WAIT;
+			WAIT;
+			WAIT;
+			break;
+		case '5':
+			CLEAR;
+			searchBook();
+			WAIT;
+			WAIT;
+			WAIT;
+			break;
+		case '6':
+			flag = true;
+			break;
+		default:
+			cout << "INVALID ANSWER ! PLEASE TRY AGAIN .";
+			WAIT;
+			cin.clear();
+			cin.ignore(numeric_limits<streamsize>::max(), '\n');
+			break;
+		}
+		if (flag)
+			break;
+	}
 }
