@@ -74,3 +74,14 @@ bool Book::operator>=(const Book& other)
 	else
 		return true;
 }
+
+void Book::print()
+{
+	cout << endl;
+	cout << "---------------------------------------" << endl;
+	cout << "Title : " << title << endl <<
+		"Author : " << author << endl <<
+		"Genre : " << genre << "		" << date << endl;
+	cout << "---------------------------------------";
+	cout << endl;
+}

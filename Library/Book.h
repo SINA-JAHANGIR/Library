@@ -24,4 +24,5 @@ public:
 	Book& operator=(const Book&);
 	bool operator<(const Book&);
 	bool operator>=(const Book&);
+	void print();
 };
