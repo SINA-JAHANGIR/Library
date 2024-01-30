@@ -142,11 +142,11 @@ NodeAVL<T>* AVLTree<T>::insert(NodeAVL<T>* r, T* value)
         r->right = nullptr;
         return r;
     }
-    else if (value < r->data) {
+    else if (*value < *r->data) {
         r->left = insert(r->left, value);
         r = balance(r);
     }
-    else if (value >= r->data) {
+    else if (*value >= *r->data) {
         r->right = insert(r->right, value);
         r = balance(r);
     } return r;
