@@ -134,6 +134,7 @@
   <ItemGroup>
     <ClInclude Include="Book.h" />
     <ClInclude Include="Node.h" />
+    <ClInclude Include="Queue.h" />
     <ClInclude Include="User.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
