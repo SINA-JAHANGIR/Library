@@ -4,6 +4,7 @@ using namespace std;
 #include "Book.h"
 #include "Node.h"
 #include "User.h"
+#include "AVL-Tree.h"
 
 Node<Book>* books;
 Node<User>* users;
@@ -12,10 +13,14 @@ void addBook(Book);
 bool removeBook(string);
 void addUser(User);
 bool removeUser(string);
+Book searchBook(string);
+void showAllBooks();
+void showAllbooksSorted();
+void showUserBooks(User);
+void showUserBooksSorted(User);
 
 int main()
 {
-
 	cout << "Hello from library !";
 
 	return 0;
@@ -91,4 +96,51 @@ bool removeUser(string u)
 		temp = temp->getNext();
 	}
 	return false;
+}
+
+Book searchBook(string title) 
+{
+	AVLTree<Book> bookAVL(books);
+	return bookAVL.search(bookAVL.get_root(), title);
+}
+
+void showAllBooks()
+{
+	Node<Book>* temp = books;
+	if (temp == nullptr)
+	{
+		cout << "THERE ARE NO BOOKS !" << endl;
+	}
+	while (temp != nullptr)
+	{
+		temp->getValue().print();
+		temp = temp->getNext();
+	}
+}
+
+void showAllbooksSorted()
+{
+	AVLTree<Book> bookAVL(books);
+	bookAVL.inorder(bookAVL.get_root());
+}
+
+void showUserBooks(User user)
+{
+	Node<Book>* temp = user.getUserBooks();
+	if (temp == nullptr)
+	{
+		cout << "THERE ARE NO BOOKS !" << endl;
+	}
+	while (temp != nullptr)
+	{
+		temp->getValue().print();
+		temp = temp->getNext();
+	}
+}
+
+void showUserBooksSorted(User user)
+{
+	Node<Book>* temp = user.getUserBooks();
+	AVLTree<Book> userBooksAVL(temp);
+	userBooksAVL.inorder(userBooksAVL.get_root());
 }
