@@ -19,13 +19,25 @@ Node<User>* users;
 
 int today;
 
+/*----------------------------*/
 void addBook(Book);
 bool removeBook(string);
 void addUser(User);
 bool removeUser(string);
+/*----------------------------*/
 void signUp();
 void signIn();
+/*----------------------------*/
+void showAllBooks();
+void showAllbooksSorted();
+void showUserBooks(User);
+void showUserBooksSorted(User);
+Book* searchBook(string);
+/*----------------------------*/
 void userMenu();
+/*----------------------------*/
+
+
 
 int main()
 {
@@ -41,12 +53,12 @@ int main()
 	while (true)
 	{
 		CLEAR;
-		char input1;
+		char input;
 		cout << "1. SIGN UP" << endl
 			<< "2. SIGN IN" << endl
 			<< "3. Exit" << endl;
-		cin >> input1;
-		switch (input1)
+		cin >> input;
+		switch (input)
 		{
 		case '1':
 			signUp();
@@ -68,7 +80,7 @@ int main()
 	return 0;
 }
 
-///////////////////////////////////////Functions///////////////////////////////////////
+/*-------------------------------------------Functions---------------------------------------------*/
 
 void addBook(Book input)
 {
@@ -140,6 +152,10 @@ bool removeUser(string u)
 	return false;
 }
 
+
+/*----------------------------------------------------------------------------------------------------*/
+
+
 void signUp()
 {
 	CLEAR;
@@ -180,6 +196,61 @@ void signIn()
 		}
 	}
 }
+
+
+/*----------------------------------------------------------------------------------------------------*/
+
+
+void showAllBooks()
+{
+	Node<Book>* temp = books;
+	if (temp == nullptr)
+	{
+		cout << "THERE ARE NO BOOKS !" << endl;
+	}
+	while (temp != nullptr)
+	{
+		temp->getValue().print();
+		temp = temp->getNext();
+	}
+}
+
+void showAllbooksSorted()
+{
+	AVLTree<Book> bookAVL(books);
+	bookAVL.inorder(bookAVL.get_root());
+}
+
+void showUserBooks(User user)
+{
+	Node<Book>* temp = user.getUserBooks();
+	if (temp == nullptr)
+	{
+		cout << "THERE ARE NO BOOKS !" << endl;
+	}
+	while (temp != nullptr)
+	{
+		temp->getValue().print();
+		temp = temp->getNext();
+	}
+}
+
+void showUserBooksSorted(User user)
+{
+	Node<Book>* temp = user.getUserBooks();
+	AVLTree<Book> userBooksAVL(temp);
+	userBooksAVL.inorder(userBooksAVL.get_root());
+}
+
+Book* searchBook(string title)
+{
+	AVLTree<Book> bookAVL(books);
+	return bookAVL.search(bookAVL.get_root(), title);
+}
+
+
+
+/*----------------------------------------------------------------------------------------------------*/
 
 
 void userMenu()
