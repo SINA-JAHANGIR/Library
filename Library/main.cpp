@@ -36,19 +36,22 @@ void showUserBooksSorted(User);
 void searchBook();
 void userMenu();
 /*----------------------------*/
-
+User* searchUser(string);
+void assignBook(string, string);
+void getBook(string, string);
+void reserveBook(string, string);
 
 
 int main()
 {
-	// Get today's date :
+	//Get today's date :
 
 	cout << "ENTER TODAY'S DATE : ";
 	int month, day;
 	cin >> month >> day;
 	today = (month - 1) * 30 + day;
 
-	// Sign-up & Sign-in 
+	//Sign-up & Sign-in 
 
 	while (true)
 	{
@@ -334,5 +337,93 @@ void userMenu()
 		}
 		if (flag)
 			break;
+	}
+}
+
+
+User* searchUser(string username)
+{
+	AVLTree<User> userAVL(users);
+	return userAVL.search(userAVL.get_root(), username);
+}
+
+void assignBook(string username, string title)
+{
+	User* user = searchUser(username);
+	AVLTree<Book> bookAVL(books);
+	Book* book = bookAVL.search(bookAVL.get_root(), title);
+
+	if (user == nullptr)
+	{
+		cout << "USER NOT FOUND !";
+	}
+	else if (book == nullptr)
+	{
+		cout << "BOOK NOT FOUND !";
+	}
+	else if (book->getAvailable() == false)
+	{
+		cout << "THIS BOOK IS NOT AVAILABLE !";
+	}
+	else if (!book->checkReservation(user->getUsername(),today))
+	{
+		cout << "THIS BOOK IS RESERVED !";
+	}
+	else
+	{
+		user->addBook(book);
+		book->setAvailable(false);
+		book->setDateOfAssign(today);
+	}
+}
+
+void getBook(string username, string title) 
+{
+	User* user = searchUser(username);
+	if (user == nullptr)
+	{
+		cout << "USER NOT FOUND !" << endl;
+	}
+	AVLTree<Book> bookAVL(user->getUserBooks());
+	Book* book = bookAVL.search(bookAVL.get_root(), title);
+	if (book == nullptr)
+	{
+		cout << "BOOK NOT FOUND !" << endl;
+	}
+	else
+	{
+		user->removeBook(title);
+		book->setAvailable(true);
+		book->setDateOfReturn(today);
+		int temp = today - book->getDateOfAssign();
+		if ( temp > 10)
+		{
+			cout << "LATE PAYMENT PENALTY : " << (temp - 10) * 5 << "$";
+		}
+
+	}
+}
+
+void reserveBook(string username, string title)
+{
+	User* user = searchUser(username);
+	AVLTree<Book> bookAVL(books);
+	Book* book = bookAVL.search(bookAVL.get_root(), title);
+	if (user == nullptr)
+	{
+		cout << "USER NOT FOUND !";
+	}
+	else if (book == nullptr)
+	{
+		cout << "BOOK NOT FOUND !";
+	}
+	else if (book->getAvailable() == true)
+	{
+		cout << "THIS BOOK IS AVAILABLE !" << endl
+			<< "YOU CAN GET IT !";
+	}
+	else
+	{
+		book->addReservation(user->getUsername(), today);
 	}
 }

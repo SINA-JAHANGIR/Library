@@ -17,6 +17,7 @@ public:
 	int getSize();
 	void enqueue(T);
 	T dequeue();
+	T getFirstElement();
 };
 
 template<typename T>
@@ -50,4 +51,10 @@ T Queue<T>::dequeue()
 	front = (front + 1) % MAX;
 	size--;
 	return temp;
+}
+
+template<typename T>
+T Queue<T>::getFirstElement()
+{
+	return queue[front];
 }
