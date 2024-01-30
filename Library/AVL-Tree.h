@@ -4,6 +4,7 @@
 #include<cstdio>
 #include<sstream>
 #include<algorithm>
+#include "Node.h"
 
 using namespace std;
 
@@ -21,7 +22,8 @@ private:
 public:
     NodeAVL<T>* root;
     AVLTree();
-    int height(NodeAVL<T>* input);
+    AVLTree(Node<T>*);
+    int height(NodeAVL<T>*);
     int difference(NodeAVL<T>*);
     NodeAVL<T>* right_right_rotat(NodeAVL<T>*);
     NodeAVL<T>* left_left_rotat(NodeAVL<T>*);
@@ -29,7 +31,7 @@ public:
     NodeAVL<T>* right_left_rotat(NodeAVL<T>*);
     NodeAVL<T>* balance(NodeAVL<T>*);
     NodeAVL<T>* insert(NodeAVL<T>*, T);
-    NodeAVL<T>* search(NodeAVL<T>*, string);
+    T search(NodeAVL<T>*, string);
     NodeAVL<T>* get_root();
     void inorder(NodeAVL<T>*);
 };
@@ -38,6 +40,17 @@ template<typename T>
 AVLTree<T>::AVLTree()
 {
     root = NULL;
+}
+
+template<typename T>
+AVLTree<T>::AVLTree(Node<T>* input)
+{
+    Node<Book>* temp = input;
+    while (temp != nullptr)
+    {
+        this->root = this->insert(this->get_root(), temp->getValue());
+        temp = temp->getNext();
+    }
 }
 
 template<typename T>
@@ -148,6 +161,14 @@ void AVLTree<T>::inorder(NodeAVL<T>* r) {
     inorder(r->right);
 }
 
+void AVLTree<Book>::inorder(NodeAVL<Book>* r) {
+    if (r == NULL)
+        return;
+    inorder(r->left);
+    r->data.print();
+    inorder(r->right);
+}
+
 template<typename T>
 NodeAVL<T>* AVLTree<T>::get_root()
 {
@@ -155,16 +176,16 @@ NodeAVL<T>* AVLTree<T>::get_root()
 }
 
 template<typename T>
-NodeAVL<T>* AVLTree<T>::search(NodeAVL<T>* r, string title)
+T AVLTree<T>::search(NodeAVL<T>* r, string title)
 {
     while (r != nullptr)
     {
         if (r->data.getTitle() == title)
-            return r;
+            return r->data;
         else if (r->data.getTitle() > title)
             r = r->left;
         else
             r = r->right;
     }
-    return r;
+    return r->data;
 }
