@@ -2,13 +2,14 @@
 
 User::User(string n, string l, string c, string u, string p)
 {
-	name = n; lastName = l; nationalCode = c; userName = u; password = p;
+	name = n; lastName = l; nationalCode = c; username = u; password = p;
 	userBooks = nullptr;
 }
 
 User::User()
 {
-	name = userName = nationalCode = userName = password = "";
+	name = username = nationalCode = username = password = "";
+	userBooks = nullptr;
 }
 
 void User::setName(string input)
@@ -26,9 +27,9 @@ void User::setNationalCode(string input)
 	nationalCode = input;
 }
 
-void User::setUserName(string input)
+void User::setUsername(string input)
 {
-	userName = input;
+	username = input;
 }
 
 void User::setPassword(string input)
@@ -51,9 +52,9 @@ string User::getNationalCode() const
 	return nationalCode;
 }
 
-string User::getUserName() const
+string User::getUsername() const
 {
-	return userName;
+	return username;
 }
 
 string User::getPassword() const
@@ -66,9 +67,25 @@ User& User::operator=(const User& other)
 	this->name = other.getName();
 	this->lastName = other.getLastName();
 	this->nationalCode = other.getNationalCode();
-	this->userName = other.getUserName();
+	this->username = other.getUsername();
 	this->password = other.getPassword();
 	return *this;
+}
+
+bool User::operator<(const User& other)
+{
+	if (username < other.getUsername())
+		return true;
+	else
+		return false;
+}
+
+bool User::operator>=(const User& other)
+{
+	if (username < other.getUsername())
+		return false;
+	else
+		return true;
 }
 
 Node<Book>* User::getUserBooks()

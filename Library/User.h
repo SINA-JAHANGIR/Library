@@ -12,7 +12,7 @@ private:
 	string name;
 	string lastName;
 	string nationalCode;
-	string userName;
+	string username;
 	string password;
 	Node<Book>* userBooks;
 public:
@@ -21,14 +21,16 @@ public:
 	void setName(string);
 	void setLastName(string);
 	void setNationalCode(string);
-	void setUserName(string);
+	void setUsername(string);
 	void setPassword(string);
 	string getName() const;
 	string getLastName() const;
 	string getNationalCode() const;
-	string getUserName() const;
+	string getUsername() const;
 	string getPassword() const;
 	User& operator=(const User&);
+	bool operator<(const User&);
+	bool operator>=(const User&);
 	Node<Book>* getUserBooks();
 	void addBook(Book);
 	bool removeBook(string);

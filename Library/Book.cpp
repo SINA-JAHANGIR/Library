@@ -61,7 +61,7 @@ Book& Book::operator=(const Book& other)
 
 bool Book::operator<(const Book& other)
 {
-	if (this->getTitle() < other.getTitle())
+	if (title < other.getTitle())
 		return true;
 	else
 		return false;
@@ -69,7 +69,7 @@ bool Book::operator<(const Book& other)
 
 bool Book::operator>=(const Book& other)
 {
-	if (this->getTitle() < other.getTitle())
+	if (title < other.getTitle())
 		return false;
 	else
 		return true;

@@ -31,7 +31,7 @@ public:
     NodeAVL<T>* right_left_rotat(NodeAVL<T>*);
     NodeAVL<T>* balance(NodeAVL<T>*);
     NodeAVL<T>* insert(NodeAVL<T>*, T);
-    T search(NodeAVL<T>*, string);
+    T* search(NodeAVL<T>*, string);
     NodeAVL<T>* get_root();
     void inorder(NodeAVL<T>*);
 };
@@ -45,7 +45,7 @@ AVLTree<T>::AVLTree()
 template<typename T>
 AVLTree<T>::AVLTree(Node<T>* input)
 {
-    Node<Book>* temp = input;
+    Node<T>* temp = input;
     while (temp != nullptr)
     {
         this->root = this->insert(this->get_root(), temp->getValue());
@@ -175,17 +175,30 @@ NodeAVL<T>* AVLTree<T>::get_root()
     return root;
 }
 
-template<typename T>
-T AVLTree<T>::search(NodeAVL<T>* r, string title)
+User* AVLTree<User>::search(NodeAVL<User>* r, string username)
+{
+    while (r != nullptr)
+    {
+        if (r->data.getUsername() == username)
+            return &r->data;
+        else if (r->data.getUsername() > username)
+            r = r->left;
+        else
+            r = r->right;
+    }
+    return &r->data;
+}
+
+Book* AVLTree<Book>::search(NodeAVL<Book>* r, string title)
 {
     while (r != nullptr)
     {
         if (r->data.getTitle() == title)
-            return r->data;
+            return &r->data;
         else if (r->data.getTitle() > title)
             r = r->left;
         else
             r = r->right;
     }
-    return r->data;
+    return &r->data;
 }
