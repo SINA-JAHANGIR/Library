@@ -5,13 +5,12 @@
 #include<sstream>
 #include<algorithm>
 #include "Node.h"
-#include "Book.h"
 
 using namespace std;
 
 template<typename T>
 struct NodeAVL {
-    T data;
+    T* data;
     NodeAVL* left;
     NodeAVL* right;
 };
@@ -31,7 +30,7 @@ public:
     NodeAVL<T>* left_right_rotat(NodeAVL<T>*);
     NodeAVL<T>* right_left_rotat(NodeAVL<T>*);
     NodeAVL<T>* balance(NodeAVL<T>*);
-    NodeAVL<T>* insert(NodeAVL<T>*, T);
+    NodeAVL<T>* insert(NodeAVL<T>*, T*);
     T* search(NodeAVL<T>*, string);
     NodeAVL<T>* get_root();
     void inorder(NodeAVL<T>*);
@@ -134,21 +133,21 @@ NodeAVL<T>* AVLTree<T>::balance(NodeAVL<T>* input)
 }
 
 template<typename T>
-NodeAVL<T>* AVLTree<T>::insert(NodeAVL<T>* r, T valu)
+NodeAVL<T>* AVLTree<T>::insert(NodeAVL<T>* r, T* value)
 {
     if (r == nullptr) {
         r = new NodeAVL<T>;
-        r->data = valu;
+        r->data = value;
         r->left = nullptr;
         r->right = nullptr;
         return r;
     }
-    else if (valu < r->data) {
-        r->left = insert(r->left, valu);
+    else if (value < r->data) {
+        r->left = insert(r->left, value);
         r = balance(r);
     }
-    else if (valu >= r->data) {
-        r->right = insert(r->right, valu);
+    else if (value >= r->data) {
+        r->right = insert(r->right, value);
         r = balance(r);
     } return r;
 }
@@ -166,7 +165,7 @@ void AVLTree<Book>::inorder(NodeAVL<Book>* r) {
     if (r == NULL)
         return;
     inorder(r->left);
-    r->data.print();
+    r->data->print();
     inorder(r->right);
 }
 
@@ -180,26 +179,26 @@ User* AVLTree<User>::search(NodeAVL<User>* r, string username)
 {
     while (r != nullptr)
     {
-        if (r->data.getUsername() == username)
-            return &r->data;
-        else if (r->data.getUsername() > username)
+        if (r->data->getUsername() == username)
+            return r->data;
+        else if (r->data->getUsername() > username)
             r = r->left;
         else
             r = r->right;
     }
-    return &r->data;
+    return nullptr;
 }
 
 Book* AVLTree<Book>::search(NodeAVL<Book>* r, string title)
 {
     while (r != nullptr)
     {
-        if (r->data.getTitle() == title)
-            return &r->data;
-        else if (r->data.getTitle() > title)
+        if (r->data->getTitle() == title)
+            return r->data;
+        else if (r->data->getTitle() > title)
             r = r->left;
         else
             r = r->right;
     }
-    return &r->data;
+    return nullptr;
 }

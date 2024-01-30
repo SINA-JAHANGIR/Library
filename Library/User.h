@@ -31,7 +31,7 @@ public:
 	User& operator=(const User&);
 	bool operator<(const User&);
 	bool operator>=(const User&);
-	Node<Book>* getUserBooks();
-	void addBook(Book);
+	Node<Book>* getUserBooks() const;
+	void addBook(Book*);
 	bool removeBook(string);
 };
