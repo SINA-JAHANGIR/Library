@@ -36,6 +36,7 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Queue.h">
+    <ClInclude Include="AVL-Tree.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
