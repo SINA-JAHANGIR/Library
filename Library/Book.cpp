@@ -128,7 +128,7 @@ void Book::removeReservation(int today)
 {
 	pair<string, int> temp;
 	temp = reserve.getFirstElement();
-	while (today - dateOfReturn > 3 && temp.first!= "")
+	while (available == true && today - dateOfReturn > 3 && temp.first!= "")
 	{
 		reserve.dequeue();
 		temp = reserve.getFirstElement();

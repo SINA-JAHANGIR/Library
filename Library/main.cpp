@@ -43,45 +43,21 @@ void addBook();
 void deleteBook();
 void adminMenu();
 /*----------------------------*/
-
+void extendTime();
 
 
 int main()
 {
 	//Get today's date :
 
-	Book b1("b1", "l", "1984", "bbc");
-	Book b2("b2", "l", "1984", "bbc");
-	Book b3("b3", "l", "1984", "bbc");
-	Book b4("b4", "l", "1984", "bbc");
-	Book b5("b5", "l", "1984", "bbc");
-	insertBook(&b1);
-	insertBook(&b2);
-	insertBook(&b3);
-	insertBook(&b4);
-	insertBook(&b5);
-
-	User u1("ali", "abasi", "564", "ali", "1234");
-	insertUser(&u1);
-	User u2("sina", "jahangir", "564", "sina", "4321");
-	insertUser(&u2);
-	User u3("mehdi", "vakili", "564", "mehdi", "9876");
-	insertUser(&u3);
-	assignBook();
-	reserveBook();
-	reserveBook();
-	getBook();
-	assignBook();
-	getBook();
-	assignBook();
-	/*cout << "ENTER TODAY'S DATE : ";
+	cout << "ENTER TODAY'S DATE : ";
 	int month, day;
 	cin >> month >> day;
-	today = (month - 1) * 30 + day;*/
+	today = (month - 1) * 30 + day;
 
 	//Sign-up & Sign-in 
 
-	/*while (true)
+	while (true)
 	{
 		CLEAR;
 		char input;
@@ -106,7 +82,7 @@ int main()
 			cin.ignore(numeric_limits<streamsize>::max(), '\n');
 			break;
 		}
-	}*/
+	}
 
 	return 0;
 }
@@ -567,3 +543,47 @@ void adminMenu()
 
 /*----------------------------------------------------------------------------------------------------*/
 
+
+
+void extendTime()
+{
+	string username, title;
+	cout << "USERNAME : "; cin >> username;
+	cout << endl << "TITLE : "; cin >> title;
+	CLEAR;
+	User* user = searchUser(username);
+	AVLTree<Book> bookAVL(books);
+	Book* book = bookAVL.search(bookAVL.get_root(), title);
+	if (user == nullptr)
+	{
+		cout << "USER NOT FOUND !";
+		WAIT;
+		return;
+	}
+	else if (book == nullptr)
+	{
+		cout << "BOOK NOT FOUND !";
+		WAIT;
+		return;
+	}
+	int temp = today - book->getDateOfAssign();
+	if (!book->checkReservation(user->getUsername(), today))
+	{
+		cout << "THIS BOOK IS RESERVED !";
+		WAIT;
+	}
+	else if (temp > 10)
+	{
+		cout << "LATE PAYMENT PENALTY : " << (temp - 10) * 5 << "$" << endl
+			<< "EXTENDED FOR 10 DAYS !";
+		book->setDateOfAssign(today);
+		WAIT;
+	}
+	else
+	{
+		cout << "LATE PAYMENT PENALTY : 0$" << endl
+			<< "EXTENDED FOR 10 DAYS !";
+		book->setDateOfAssign(today);
+		WAIT;
+	}
+}
