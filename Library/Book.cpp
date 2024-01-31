@@ -141,7 +141,13 @@ bool Book::checkReservation(string username, int today)
 	pair<string, int> temp;
 	temp = reserve.getFirstElement();
 	if (reserve.getSize() == 0 || temp.first == username)
+	{
+		if (temp.first == username)
+		{
+			reserve.dequeue();
+		}
 		return true;
+	}
 	else
 		return false;
 }
