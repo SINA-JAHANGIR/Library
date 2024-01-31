@@ -34,10 +34,9 @@ void searchBook();
 void userMenu();
 /*----------------------------*/
 User* searchUser(string);
-void assignBook(string, string);
-void getBook(string, string);
-void reserveBook(string, string);
-
+void assignBook();
+void getBook();
+void reserveBook();
 void insertBook(Book*);
 bool removeBook(string);
 void addBook();
@@ -134,8 +133,8 @@ void signUp()
 	cout << endl << "NATIONAL CODE : "; cin >> nationalCode;
 	cout << endl << "USERNAME : "; cin >> username;
 	cout << endl << "PASSWORD : "; cin >> password;
-	User temp(name, lastName, nationalCode, username, password);
-	insertUser(&temp);
+	User* temp = new User(name, lastName, nationalCode, username, password);
+	insertUser(temp);
 }
 
 void signIn()
@@ -320,8 +319,12 @@ User* searchUser(string username)
 	return userAVL.search(userAVL.get_root(), username);
 }
 
-void assignBook(string username, string title)
+void assignBook()
 {
+	string username, title;
+	cout << "USERNAME : "; cin >> username;
+	cout << endl << "TITLE : "; cin >> title;
+	CLEAR;
 	User* user = searchUser(username);
 	AVLTree<Book> bookAVL(books);
 	Book* book = bookAVL.search(bookAVL.get_root(), title);
@@ -329,33 +332,43 @@ void assignBook(string username, string title)
 	if (user == nullptr)
 	{
 		cout << "USER NOT FOUND !";
+		WAIT;
 	}
 	else if (book == nullptr)
 	{
 		cout << "BOOK NOT FOUND !";
+		WAIT;
 	}
 	else if (book->getAvailable() == false)
 	{
 		cout << "THIS BOOK IS NOT AVAILABLE !";
+		WAIT;
 	}
 	else if (!book->checkReservation(user->getUsername(),today))
 	{
 		cout << "THIS BOOK IS RESERVED !";
+		WAIT;
 	}
 	else
 	{
-		user->addBook(book);
+		user->insertBook(book);
 		book->setAvailable(false);
 		book->setDateOfAssign(today);
 	}
 }
 
-void getBook(string username, string title) 
+void getBook() 
 {
+	string username, title;
+	cout << "USERNAME : "; cin >> username;
+	cout << endl << "TITLE : "; cin >> title;
+	CLEAR;
 	User* user = searchUser(username);
 	if (user == nullptr)
 	{
 		cout << "USER NOT FOUND !" << endl;
+		WAIT;
+		return;
 	}
 	AVLTree<Book> bookAVL(user->getUserBooks());
 	Book* book = bookAVL.search(bookAVL.get_root(), title);
@@ -369,51 +382,46 @@ void getBook(string username, string title)
 		book->setAvailable(true);
 		book->setDateOfReturn(today);
 		int temp = today - book->getDateOfAssign();
-		if ( temp > 10)
+		if (temp > 10)
 		{
 			cout << "LATE PAYMENT PENALTY : " << (temp - 10) * 5 << "$";
 		}
-
+		else
+			cout << "LATE PAYMENT PENALTY : 0$";
 	}
+	WAIT;
 }
 
-void reserveBook(string username, string title)
+void reserveBook()
 {
+	string username, title;
+	cout << "USERNAME : "; cin >> username;
+	cout << endl << "TITLE : "; cin >> title;
+	CLEAR;
 	User* user = searchUser(username);
 	AVLTree<Book> bookAVL(books);
 	Book* book = bookAVL.search(bookAVL.get_root(), title);
 	if (user == nullptr)
 	{
 		cout << "USER NOT FOUND !";
+		WAIT;
 	}
 	else if (book == nullptr)
 	{
 		cout << "BOOK NOT FOUND !";
+		WAIT;
 	}
 	else if (book->getAvailable() == true)
 	{
 		cout << "THIS BOOK IS AVAILABLE !" << endl
 			<< "YOU CAN GET IT !";
+		WAIT;
 	}
 	else
 	{
 		book->addReservation(user->getUsername(), today);
 	}
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 void insertBook(Book* input)
 {
@@ -495,13 +503,16 @@ void adminMenu()
 		switch (input)
 		{
 		case '1':
-			
+			CLEAR;
+			assignBook();
 			break;
 		case '2':
-			
+			CLEAR;
+			getBook();
 			break;
 		case '3':
-			
+			CLEAR;
+			reserveBook();
 			break;
 		case '4':
 			
