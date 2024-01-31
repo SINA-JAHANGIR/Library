@@ -25,6 +25,7 @@ void insertUser(User*);
 bool removeUser(string);
 void signUp();
 void signIn();
+void signUpInMenu();
 /*----------------------------*/
 void showAllBooks();
 void showAllBooksSorted();
@@ -48,40 +49,18 @@ void adminMenu();
 
 int main()
 {
-	//Get today's date :
-
-	cout << "ENTER TODAY'S DATE : ";
-	int month, day;
-	cin >> month >> day;
-	today = (month - 1) * 30 + day;
-
-	//Sign-up & Sign-in 
 
 	while (true)
 	{
 		CLEAR;
-		char input;
-		cout << "1. SIGN UP" << endl
-			<< "2. SIGN IN" << endl
-			<< "3. Exit" << endl;
-		cin >> input;
-		switch (input)
-		{
-		case '1':
-			signUp();
-			break;
-		case '2':
-			signIn();
-			break;
-		case '3':
-			exit(1);
-		default:
-			cout << "INVALID ANSWER ! PLEASE TRY AGAIN .";
-			WAIT;
-			cin.clear();
-			cin.ignore(numeric_limits<streamsize>::max(), '\n');
-			break;
-		}
+		today = 0;
+		currentUser = nullptr;
+		cout << "ENTER TODAY'S DATE : ";
+		int month, day;
+		cin >> month >> day;
+		today = (month - 1) * 30 + day;
+
+		signUpInMenu();
 	}
 
 	return 0;
@@ -166,6 +145,44 @@ void signIn()
 			cout << "INCORRECT PASSWORD !";
 			WAIT;
 		}
+	}
+}
+
+
+void signUpInMenu()
+{
+	bool flag = false;
+	while (true)
+	{
+		CLEAR;
+		char input;
+		cout << "1. SIGN UP" << endl
+			<< "2. SIGN IN" << endl
+			<< "3. BACK" << endl
+			<< "4. Exit" << endl;
+		cin >> input;
+		switch (input)
+		{
+		case '1':
+			signUp();
+			break;
+		case '2':
+			signIn();
+			break;
+		case '3':
+			flag = true;
+			break;
+		case '4':
+			exit(1);
+		default:
+			cout << "INVALID ANSWER ! PLEASE TRY AGAIN .";
+			WAIT;
+			cin.clear();
+			cin.ignore(numeric_limits<streamsize>::max(), '\n');
+			break;
+		}
+		if (flag)
+			break;
 	}
 }
 
