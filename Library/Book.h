@@ -37,7 +37,9 @@ public:
 	bool operator<(const Book&);
 	bool operator>=(const Book&);
 	void print();
-	void addReservation(string, int);
+	void addReservation(string);
 	void removeReservation(int);
 	bool checkReservation(string, int);
+	void updateI();
+	int getSizeReserve();
 };

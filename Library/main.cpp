@@ -38,17 +38,18 @@ User* searchUser(string);
 void assignBook();
 void getBook();
 void reserveBook();
+void extendTime();
 void insertBook(Book*);
 bool removeBook(string);
 void addBook();
 void deleteBook();
 void adminMenu();
 /*----------------------------*/
-void extendTime();
 
 
 int main()
 {
+	// Start :
 
 	while (true)
 	{
@@ -405,7 +406,9 @@ void getBook()
 		}
 		else
 			cout << "LATE PAYMENT PENALTY : 0$";
+		book->updateI();
 	}
+	WAIT;
 	WAIT;
 }
 
@@ -428,7 +431,7 @@ void reserveBook()
 		cout << "BOOK NOT FOUND !";
 		WAIT;
 	}
-	else if (book->getAvailable() == true)
+	else if (book->getAvailable() == true && book->getSizeReserve() == 0)
 	{
 		cout << "THIS BOOK IS AVAILABLE !" << endl
 			<< "YOU CAN GET IT !";
@@ -436,9 +439,55 @@ void reserveBook()
 	}
 	else
 	{
-		book->addReservation(user->getUsername(), today);
+		book->addReservation(user->getUsername());
 	}
 }
+
+
+void extendTime()
+{
+	string username, title;
+	cout << "USERNAME : "; cin >> username;
+	cout << endl << "TITLE : "; cin >> title;
+	CLEAR;
+	User* user = searchUser(username);
+	AVLTree<Book> bookAVL(user->getUserBooks());
+	Book* book = bookAVL.search(bookAVL.get_root(), title);
+	if (user == nullptr)
+	{
+		cout << "USER NOT FOUND !";
+		WAIT;
+		return;
+	}
+	else if (book == nullptr)
+	{
+		cout << "BOOK NOT FOUND !";
+		WAIT;
+		return;
+	}
+	int temp = today - book->getDateOfAssign();
+	if (!book->checkReservation(user->getUsername(), today))
+	{
+		cout << "THIS BOOK IS RESERVED !";
+		WAIT;
+	}
+	else if (temp > 10)
+	{
+		cout << "LATE PAYMENT PENALTY : " << (temp - 10) * 5 << "$" << endl
+			<< "EXTENDED FOR 10 DAYS !";
+		book->setDateOfAssign(today);
+		WAIT;
+		WAIT;
+	}
+	else
+	{
+		cout << "LATE PAYMENT PENALTY : 0$" << endl
+			<< "EXTENDED FOR 10 DAYS !";
+		book->setDateOfAssign(today);
+		WAIT;
+	}
+}
+
 
 void insertBook(Book* input)
 {
@@ -532,7 +581,8 @@ void adminMenu()
 			reserveBook();
 			break;
 		case '4':
-			
+			CLEAR;
+			extendTime();
 			break;
 		case '5':
 			CLEAR;
@@ -558,49 +608,4 @@ void adminMenu()
 	}
 }
 
-/*----------------------------------------------------------------------------------------------------*/
-
-
-
-void extendTime()
-{
-	string username, title;
-	cout << "USERNAME : "; cin >> username;
-	cout << endl << "TITLE : "; cin >> title;
-	CLEAR;
-	User* user = searchUser(username);
-	AVLTree<Book> bookAVL(books);
-	Book* book = bookAVL.search(bookAVL.get_root(), title);
-	if (user == nullptr)
-	{
-		cout << "USER NOT FOUND !";
-		WAIT;
-		return;
-	}
-	else if (book == nullptr)
-	{
-		cout << "BOOK NOT FOUND !";
-		WAIT;
-		return;
-	}
-	int temp = today - book->getDateOfAssign();
-	if (!book->checkReservation(user->getUsername(), today))
-	{
-		cout << "THIS BOOK IS RESERVED !";
-		WAIT;
-	}
-	else if (temp > 10)
-	{
-		cout << "LATE PAYMENT PENALTY : " << (temp - 10) * 5 << "$" << endl
-			<< "EXTENDED FOR 10 DAYS !";
-		book->setDateOfAssign(today);
-		WAIT;
-	}
-	else
-	{
-		cout << "LATE PAYMENT PENALTY : 0$" << endl
-			<< "EXTENDED FOR 10 DAYS !";
-		book->setDateOfAssign(today);
-		WAIT;
-	}
-}
+/*DONE*/

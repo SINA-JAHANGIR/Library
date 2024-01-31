@@ -118,17 +118,17 @@ void Book::print()
 	cout << endl;
 }
 
-void Book::addReservation(string username, int date)
+void Book::addReservation(string username)
 {
 
-	reserve.enqueue(make_pair(username, date));
+	reserve.enqueue(make_pair(username, reserve.getI() + 1));
 }
 
 void Book::removeReservation(int today)
 {
 	pair<string, int> temp;
 	temp = reserve.getFirstElement();
-	while (available == true && today - dateOfReturn > 3 && temp.first!= "")
+	while (available == true && today - dateOfReturn > 3 * temp.second && temp.first!= "")
 	{
 		reserve.dequeue();
 		temp = reserve.getFirstElement();
@@ -150,4 +150,22 @@ bool Book::checkReservation(string username, int today)
 	}
 	else
 		return false;
+}
+
+void Book::updateI()
+{
+	pair<string, int> temp;
+	int i = 1;
+	for (i ; i <= reserve.getSize(); i++)
+	{
+		temp = reserve.dequeue();
+		temp.second = i;
+		reserve.enqueue(temp);
+	}
+	reserve.setI(i);
+}
+
+int Book::getSizeReserve()
+{
+	return reserve.getSize();
 }

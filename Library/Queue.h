@@ -11,9 +11,12 @@ private:
 	int size;
 	int front;
 	int rear;
+	int i;
 	T queue[MAX];
 public:
 	Queue();
+	void setI(int);
+	int getI();
 	int getSize();
 	void enqueue(T);
 	T dequeue();
@@ -23,7 +26,19 @@ public:
 template<typename T>
 Queue<T>::Queue()
 {
-	size = rear = front = 0;
+	size = rear = front = i = 0;
+}
+
+template<typename T>
+void Queue<T>::setI(int input)
+{
+	i = input;
+}
+
+template<typename T>
+int Queue<T>::getI()
+{
+	return i;
 }
 
 template<typename T>
@@ -40,6 +55,7 @@ void Queue<T>::enqueue(T input)
 	queue[rear] = input;
 	rear = (rear + 1) % MAX;
 	size++;
+	i++;
 }
 
 template<typename T>
