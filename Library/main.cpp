@@ -50,14 +50,38 @@ int main()
 {
 	//Get today's date :
 
-	cout << "ENTER TODAY'S DATE : ";
+	Book b1("b1", "l", "1984", "bbc");
+	Book b2("b2", "l", "1984", "bbc");
+	Book b3("b3", "l", "1984", "bbc");
+	Book b4("b4", "l", "1984", "bbc");
+	Book b5("b5", "l", "1984", "bbc");
+	insertBook(&b1);
+	insertBook(&b2);
+	insertBook(&b3);
+	insertBook(&b4);
+	insertBook(&b5);
+
+	User u1("ali", "abasi", "564", "ali", "1234");
+	insertUser(&u1);
+	User u2("sina", "jahangir", "564", "sina", "4321");
+	insertUser(&u2);
+	User u3("mehdi", "vakili", "564", "mehdi", "9876");
+	insertUser(&u3);
+	assignBook();
+	reserveBook();
+	reserveBook();
+	getBook();
+	assignBook();
+	getBook();
+	assignBook();
+	/*cout << "ENTER TODAY'S DATE : ";
 	int month, day;
 	cin >> month >> day;
-	today = (month - 1) * 30 + day;
+	today = (month - 1) * 30 + day;*/
 
 	//Sign-up & Sign-in 
 
-	while (true)
+	/*while (true)
 	{
 		CLEAR;
 		char input;
@@ -82,7 +106,7 @@ int main()
 			cin.ignore(numeric_limits<streamsize>::max(), '\n');
 			break;
 		}
-	}
+	}*/
 
 	return 0;
 }
