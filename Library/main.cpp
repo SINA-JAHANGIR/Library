@@ -123,7 +123,7 @@ void signIn()
 	string username, password;
 	cout << "USERNAME : "; cin >> username;
 	cout << endl << "PASSWORD : "; cin >> password;
-	if (username == "admin" && password == "1234")
+	if (username == "Admin" && password == "1101")
 	{
 		adminMenu();
 		return;
@@ -451,15 +451,15 @@ void extendTime()
 	cout << endl << "TITLE : "; cin >> title;
 	CLEAR;
 	User* user = searchUser(username);
-	AVLTree<Book> bookAVL(user->getUserBooks());
-	Book* book = bookAVL.search(bookAVL.get_root(), title);
 	if (user == nullptr)
 	{
 		cout << "USER NOT FOUND !";
 		WAIT;
 		return;
 	}
-	else if (book == nullptr)
+	AVLTree<Book> bookAVL(user->getUserBooks());
+	Book* book = bookAVL.search(bookAVL.get_root(), title);
+	if (book == nullptr)
 	{
 		cout << "BOOK NOT FOUND !";
 		WAIT;
