@@ -49,6 +49,32 @@ void adminMenu();
 
 int main()
 {
+	////////////////////////////////////////////////////
+	User* user1 = new User("mehdi", "vakili", "1100", "mehdi-vk", "4321");
+	User* user2 = new User("sina", "jahangir", "688", "sina-13", "0013");
+	User* user3 = new User("javad", "kamali", "111", "javad", "kamali");
+	User* user4 = new User("mohammad mehdi", "javidi", "987", "javid", "javidi");
+	insertUser(user1);
+	insertUser(user2);
+	insertUser(user3);
+	insertUser(user4);
+	Book* book1 = new Book("book-1", "genre-1", "date-1", "aUthor-1");
+	Book* book2 = new Book("book-2", "genre-2", "date-2", "aUthor-2");
+	Book* book3 = new Book("book-3", "genre-3", "date-3", "aUthor-3");
+	Book* book4 = new Book("book-4", "genre-4", "date-4", "aUthor-4");
+	Book* book5 = new Book("book-5", "genre-5", "date-5", "aUthor-5");
+	Book* book6 = new Book("book-6", "genre-6", "date-6", "aUthor-6");
+	Book* book7 = new Book("book-7", "genre-7", "date-7", "aUthor-7");
+	Book* book8 = new Book("book-8", "genre-8", "date-8", "aUthor-8");
+	insertBook(book1);
+	insertBook(book2);
+	insertBook(book3);
+	insertBook(book4);
+	insertBook(book5);
+	insertBook(book6);
+	insertBook(book7);
+	insertBook(book8);
+	////////////////////////////////////////////////////
 	// Start :
 
 	while (true)
@@ -451,15 +477,15 @@ void extendTime()
 	cout << endl << "TITLE : "; cin >> title;
 	CLEAR;
 	User* user = searchUser(username);
-	AVLTree<Book> bookAVL(user->getUserBooks());
-	Book* book = bookAVL.search(bookAVL.get_root(), title);
 	if (user == nullptr)
 	{
 		cout << "USER NOT FOUND !";
 		WAIT;
 		return;
 	}
-	else if (book == nullptr)
+	AVLTree<Book> bookAVL(user->getUserBooks());
+	Book* book = bookAVL.search(bookAVL.get_root(), title);
+	if (book == nullptr)
 	{
 		cout << "BOOK NOT FOUND !";
 		WAIT;
