@@ -101,5 +101,3 @@ g++ -std=c++11 main.cpp Book.cpp User.cpp -o library_system
 * **Operator Overloading:** Custom comparison behaviors allowing complex classes to interface seamlessly with standard search trees.
 
 ```
-
-```
