@@ -99,5 +99,3 @@ g++ -std=c++11 main.cpp Book.cpp User.cpp -o library_system
 * **Memory Management:** Manual allocation and deallocation (`new`/`delete`) of dynamic nodes to prevent memory leaks.
 * **Template Programming:** Fully templated `Node`, `Queue`, and `AVLTree` classes to decouple data structures from domain entities (`Book` and `User`).
 * **Operator Overloading:** Custom comparison behaviors allowing complex classes to interface seamlessly with standard search trees.
-
-```
